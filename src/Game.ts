@@ -24,7 +24,7 @@ export class Game {
       new Enemy(this, "enemy-light", new Vector(50, 50), tank)
     );
 
-    // Because viewport may be null
+    // Because viewport may be null according to typescript
     const viewportWidth = visualViewport ? visualViewport.width : 0;
     const viewportHeight = visualViewport ? visualViewport.height : 0;
 
