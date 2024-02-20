@@ -32,6 +32,10 @@ export class Enemy extends GameObject {
   }
 
   onCollision(target: GameObject): void {
+    // if the enemy is enemy-light and its been hit by a bullet, it should be destroyed
+    // if the enemy is enemy-medium and its been hit by a rocket, it should be destroyed
+    // if the enemy is enemy-heavy and its been hit by a mine, it should be destroyed
+
     if (
       (target instanceof Bullet && this.type == "enemy-light") ||
       (target instanceof Rocket && this.type == "enemy-medium") ||
