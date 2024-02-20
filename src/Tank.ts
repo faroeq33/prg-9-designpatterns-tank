@@ -3,11 +3,13 @@ import { Game } from "./Game";
 import { GameObject } from "./GameObject";
 import { Turret } from "./Turret";
 import { Vector } from "./Vector";
+import { BulletStrategy } from "./strategies/BulletStrategy";
 
 export class Tank extends GameObject {
+  private _projectileStrategy: ProjectileStrategy = new BulletStrategy();
+
   private readonly FRICTION: number = 0.3;
   private readonly ACCELERATION: number = 0.2;
-
   // Fields
   private turnLeft: boolean = false;
   private turnRight: boolean = false;
@@ -25,9 +27,12 @@ export class Tank extends GameObject {
   constructor(game: Game) {
     super("tank-body");
 
+    const viewportWidth = visualViewport ? visualViewport.width : 0;
+    const viewportHeight = visualViewport ? visualViewport.height : 0;
+
     this.game = game;
-    this.position.x = visualViewport.width / 2;
-    this.position.y = visualViewport.height / 2;
+    this.position.x = viewportWidth / 2;
+    this.position.y = viewportHeight / 2;
     this.speed = new Vector(0, 0);
 
     this.turret = new Turret(this);
@@ -109,6 +114,7 @@ export class Tank extends GameObject {
   }
 
   onCollision(target: GameObject): void {
+    console.log(target);
     // throw new Error("Method not implemented.");
   }
 
@@ -125,5 +131,16 @@ export class Tank extends GameObject {
    */
   protected degToRad(degrees: number) {
     return (degrees * Math.PI) / 180;
+  }
+
+  public get projectileStrategy(): ProjectileStrategy {
+    return this._projectileStrategy;
+  }
+  public set setProjectileStrategy(value: ProjectileStrategy) {
+    this._projectileStrategy = value;
+  }
+
+  public executeStrategy(): void {
+    this.projectileStrategy.execute();
   }
 }
