@@ -8,10 +8,6 @@ import { MissileAmmo } from "./ammo/MissileAmmo";
 
 import "./css/style.css";
 
-// document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
-
-// `;
-
 export class Game {
   // Fields
   public gameObjects: GameObject[] = [];
@@ -27,21 +23,21 @@ export class Game {
     this.gameObjects.push(
       new Enemy(this, "enemy-light", new Vector(50, 50), tank)
     );
+
+    // Because viewport may be null
+    const viewportWidth = visualViewport ? visualViewport.width : 0;
+    const viewportHeight = visualViewport ? visualViewport.height : 0;
+
     this.gameObjects.push(
       new Enemy(
         this,
         "enemy-medium",
-        new Vector(visualViewport.width - 50, visualViewport.height - 50),
+        new Vector(viewportWidth - 50, viewportHeight - 50),
         tank
       )
     );
     this.gameObjects.push(
-      new Enemy(
-        this,
-        "enemy-heavy",
-        new Vector(0, visualViewport.height - 50),
-        tank
-      )
+      new Enemy(this, "enemy-heavy", new Vector(0, viewportHeight - 50), tank)
     );
 
     this.gameLoop();
