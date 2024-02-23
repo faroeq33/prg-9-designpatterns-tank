@@ -5,14 +5,19 @@ import { Vector } from "../Vector";
 
 export abstract class Projectile extends GameObject {
   // Field
-  private damage: number = 15;
+  private _damage: number = 15;
+
   private speed: number = 10;
   private parentTurret: Turret;
   private direction: Vector;
 
   // Properties
+  public set Damage(value: number) {
+    this._damage = value;
+  }
+
   public get Damage(): number {
-    return this.damage;
+    return this._damage;
   }
   public get ParentTurret(): GameObject {
     return this.parentTurret;

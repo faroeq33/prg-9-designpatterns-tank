@@ -1,16 +1,16 @@
-import { Bullet } from "./projectiles/Bullet";
 import { Game } from "./Game";
 import { GameObject } from "./GameObject";
 import { Turret } from "./Turret";
 import { Vector } from "./Vector";
 import { BulletStrategy } from "./strategies/BulletStrategy";
-import { BulletAmmo } from "./ammo/BulletAmmo";
 import { RocketAmmo } from "./ammo/RocketAmmo";
 import { MissileAmmo } from "./ammo/MissileAmmo";
+import { ProjectileStrategy } from "./strategies/ProjectileStrategy";
+import { RocketStrategy } from "./strategies/RocketStrategy";
+import { BulletAmmo } from "./ammo/BulletAmmo";
+// import { RocketStrategy } from "./strategies/RocketStrategy";
 
 export class Tank extends GameObject {
-  private _projectileStrategy: ProjectileStrategy = new BulletStrategy();
-
   private readonly FRICTION: number = 0.3;
   private readonly ACCELERATION: number = 0.2;
   // Fields
@@ -23,9 +23,10 @@ export class Tank extends GameObject {
   public rotationSpeed: number = 2;
   private turret: Turret;
   private game: Game;
-  private fireRate: number = 100;
 
   protected speed: Vector = new Vector(0, 0);
+
+  private projectileStrategy: ProjectileStrategy;
 
   constructor(game: Game) {
     super("tank-body");
@@ -39,6 +40,8 @@ export class Tank extends GameObject {
     this.speed = new Vector(0, 0);
 
     this.turret = new Turret(this);
+
+    this.projectileStrategy = new BulletStrategy(this);
 
     window.addEventListener("keydown", (e: KeyboardEvent) =>
       this.handleKeyDown(e)
@@ -105,32 +108,34 @@ export class Tank extends GameObject {
 
   private fire() {
     if (this.canFire && !this.previousState) {
-      this.game.gameObjects.push(new Bullet(this));
+      const strategyAmmo = this.projectileStrategy.getAmmoType();
+      this.game.gameObjects.push(strategyAmmo);
       this.previousState = true;
       this.canFire = false;
 
       // Timer for the fire rate
       setTimeout(() => {
         this.canFire = true;
-      }, this.fireRate);
+      }, this.projectileStrategy.fireRate);
     }
   }
 
   onCollision(target: GameObject): void {
     // If tank hit ammobox then add ammo to tank'
     if (target instanceof BulletAmmo) {
-      console.log("Bullet ammo collected");
+      // switch to bullet strategy
+      this.projectileStrategy = new BulletStrategy(this);
+      this.executeStrategy();
     }
 
     if (target instanceof RocketAmmo) {
-      console.log("Rocket ammo collected");
+      this.setProjectileStrategy(new RocketStrategy(this));
+      this.executeStrategy();
     }
 
     if (target instanceof MissileAmmo) {
-      console.log("Missile ammo collected");
+      // this._projectileStrategy = new MissileStategy();
     }
-
-    // throw new Error("Method not implemented.");
   }
 
   private keepInWindow() {
@@ -148,14 +153,11 @@ export class Tank extends GameObject {
     return (degrees * Math.PI) / 180;
   }
 
-  public get getProjectileStrategy(): ProjectileStrategy {
-    return this._projectileStrategy;
-  }
-  public set setProjectileStrategy(value: ProjectileStrategy) {
-    this._projectileStrategy = value;
+  public setProjectileStrategy(value: ProjectileStrategy) {
+    this.projectileStrategy = value;
   }
 
   public executeStrategy(): void {
-    this.getProjectileStrategy.execute();
+    this.projectileStrategy.execute();
   }
 }

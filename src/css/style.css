@@ -123,7 +123,7 @@ ammo-missile {
   background-image: url("../images/ammobox3.png");
 }
 
-/* ammo,
+ammo,
 repair {
   display: block;
   position: absolute;
@@ -137,4 +137,4 @@ repair {
 }
 ammo {
   background-image: url("./images/ammobox.png");
-} */
+}
