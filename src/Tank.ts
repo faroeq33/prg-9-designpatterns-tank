@@ -4,6 +4,9 @@ import { GameObject } from "./GameObject";
 import { Turret } from "./Turret";
 import { Vector } from "./Vector";
 import { BulletStrategy } from "./strategies/BulletStrategy";
+import { BulletAmmo } from "./ammo/BulletAmmo";
+import { RocketAmmo } from "./ammo/RocketAmmo";
+import { MissileAmmo } from "./ammo/MissileAmmo";
 
 export class Tank extends GameObject {
   private _projectileStrategy: ProjectileStrategy = new BulletStrategy();
@@ -114,7 +117,19 @@ export class Tank extends GameObject {
   }
 
   onCollision(target: GameObject): void {
-    console.log(target);
+    // If tank hit ammobox then add ammo to tank'
+    if (target instanceof BulletAmmo) {
+      console.log("Bullet ammo collected");
+    }
+
+    if (target instanceof RocketAmmo) {
+      console.log("Rocket ammo collected");
+    }
+
+    if (target instanceof MissileAmmo) {
+      console.log("Missile ammo collected");
+    }
+
     // throw new Error("Method not implemented.");
   }
 
@@ -133,7 +148,7 @@ export class Tank extends GameObject {
     return (degrees * Math.PI) / 180;
   }
 
-  public get projectileStrategy(): ProjectileStrategy {
+  public get getProjectileStrategy(): ProjectileStrategy {
     return this._projectileStrategy;
   }
   public set setProjectileStrategy(value: ProjectileStrategy) {
@@ -141,6 +156,6 @@ export class Tank extends GameObject {
   }
 
   public executeStrategy(): void {
-    this.projectileStrategy.execute();
+    this.getProjectileStrategy.execute();
   }
 }
