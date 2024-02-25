@@ -14,6 +14,12 @@ Mocht het commando tsc niet herkent worden. Sluit Visual Studio Code en start he
 
 Met CRTL + SHIFT + B kan je de watch starten en de code compileren.
 
+## Opstarten van het spel
+```
+npm run dev
+```
+
+
 ## Spelregels
 
 In deze opdracht werk je een spelletje uit met een tank. De tank zal moeten overleven in een golf van vijanden. Er zijn drie verschillende vijanden (light, medium, heavy) en elke vijand is uit te schakelen met een bepaald projectiel.
@@ -34,3 +40,7 @@ Vernietigt **Medium tank**
 Voordat je gaat beginnen aan de uitwerking maak je eerst een klassendiagram waarbij je het Strategy Pattern verwerkt.
 
 Natuurlijk is het extra leuk om een score toe te voegen, een restart optie en een game over screen. Dit is niet verplicht om de opdracht te halen.
+
+## Issues
+- 3e verzonnen projectiel nog niet verzonnen en uitgewerkt
+- Liep vast bij wanneer de tank de ammobox raakt, dat de bullet niet meer uit de tank schoten maar alleen op de plaats van de ammo box
