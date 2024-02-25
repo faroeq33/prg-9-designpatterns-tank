@@ -1,22 +1,21 @@
 import { GameObject } from "../GameObject";
 import { Tank } from "../Tank";
 import { Rocket } from "../projectiles/rocket";
-import { ProjectileStrategy } from "./ProjectileStrategy";
+import { WeaponStrategy } from "./WeaponStrategy";
 
-export class RocketStrategy implements ProjectileStrategy {
-  public tank;
-  private _fireRate!: number;
-
-  public get fireRate(): number {
-    return this._fireRate;
-  }
-
-  public setFireRate(value: number) {
-    this._fireRate = value;
-  }
+export class RocketStrategy implements WeaponStrategy {
+  ammoType: GameObject;
+  tank: Tank;
+  fireRate: number;
 
   constructor(tank: Tank) {
     this.tank = tank;
+    this.fireRate = 1000;
+    this.ammoType = new Rocket(this.tank);
+  }
+
+  public setFireRate(value: number) {
+    this.fireRate = value;
   }
 
   getAmmoType(): GameObject {

@@ -5,10 +5,9 @@ import { Vector } from "./Vector";
 import { BulletStrategy } from "./strategies/BulletStrategy";
 import { RocketAmmo } from "./ammo/RocketAmmo";
 import { MissileAmmo } from "./ammo/MissileAmmo";
-import { ProjectileStrategy } from "./strategies/ProjectileStrategy";
+import { WeaponStrategy } from "./strategies/WeaponStrategy";
 import { RocketStrategy } from "./strategies/RocketStrategy";
 import { BulletAmmo } from "./ammo/BulletAmmo";
-// import { RocketStrategy } from "./strategies/RocketStrategy";
 
 export class Tank extends GameObject {
   private readonly FRICTION: number = 0.3;
@@ -26,7 +25,7 @@ export class Tank extends GameObject {
 
   protected speed: Vector = new Vector(0, 0);
 
-  private projectileStrategy: ProjectileStrategy;
+  private strategy: WeaponStrategy;
 
   constructor(game: Game) {
     super("tank-body");
@@ -41,7 +40,7 @@ export class Tank extends GameObject {
 
     this.turret = new Turret(this);
 
-    this.projectileStrategy = new BulletStrategy(this);
+    this.strategy = new BulletStrategy(this);
 
     window.addEventListener("keydown", (e: KeyboardEvent) =>
       this.handleKeyDown(e)
@@ -108,7 +107,7 @@ export class Tank extends GameObject {
 
   private fire() {
     if (this.canFire && !this.previousState) {
-      const strategyAmmo = this.projectileStrategy.getAmmoType();
+      const strategyAmmo = this.strategy.ammoType;
       this.game.gameObjects.push(strategyAmmo);
       this.previousState = true;
       this.canFire = false;
@@ -116,7 +115,7 @@ export class Tank extends GameObject {
       // Timer for the fire rate
       setTimeout(() => {
         this.canFire = true;
-      }, this.projectileStrategy.fireRate);
+      }, this.strategy.fireRate);
     }
   }
 
@@ -124,12 +123,12 @@ export class Tank extends GameObject {
     // If tank hit ammobox then add ammo to tank'
     if (target instanceof BulletAmmo) {
       // switch to bullet strategy
-      this.projectileStrategy = new BulletStrategy(this);
+      this.strategy = new BulletStrategy(this);
       this.executeStrategy();
     }
 
     if (target instanceof RocketAmmo) {
-      this.setProjectileStrategy(new RocketStrategy(this));
+      this.setStrategy(new RocketStrategy(this));
       this.executeStrategy();
     }
 
@@ -153,11 +152,11 @@ export class Tank extends GameObject {
     return (degrees * Math.PI) / 180;
   }
 
-  public setProjectileStrategy(value: ProjectileStrategy) {
-    this.projectileStrategy = value;
+  public setStrategy(value: WeaponStrategy) {
+    this.strategy = value;
   }
 
   public executeStrategy(): void {
-    this.projectileStrategy.execute();
+    this.strategy.execute();
   }
 }

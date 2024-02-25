@@ -1,12 +1,11 @@
 // Wat zijn de stappen die pikuhr heeft genomen om het naar de strategy pattern te schrijven?
 
 import { GameObject } from "../GameObject";
-import { Tank } from "../Tank";
 
-export interface ProjectileStrategy {
-  tank: Tank;
+export interface WeaponStrategy {
   fireRate: number;
-  getAmmoType(): GameObject;
+  ammoType: GameObject;
+
   execute(): void;
 }
 // V 1. Maak een interface aan voor de strategieën

@@ -1,13 +1,17 @@
+import { GameObject } from "../GameObject";
 import { Tank } from "../Tank";
 import { Bullet } from "../projectiles/Bullet";
-import { ProjectileStrategy } from "./ProjectileStrategy";
+import { WeaponStrategy } from "./WeaponStrategy";
 
-export class BulletStrategy implements ProjectileStrategy {
+export class BulletStrategy implements WeaponStrategy {
+  ammoType: GameObject;
   public tank;
-  public fireRate: number = 500; // ms
+  public fireRate: number; // ms
 
   constructor(tank: Tank) {
     this.tank = tank;
+    this.ammoType = new Bullet(this.tank);
+    this.fireRate = 500;
   }
   public setFireRate(value: number) {
     this.fireRate = value;
@@ -18,7 +22,6 @@ export class BulletStrategy implements ProjectileStrategy {
   }
 
   execute(): void {
-    this.setFireRate(500); // 1 bullet per 500ms
     console.log("Bullet strategy executed");
   }
 }
