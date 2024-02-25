@@ -1,6 +1,5 @@
 # Strategy Tank
-
-Startercode voor de opdracht Strategy Tank [PRG09]
+Code voor de opdracht Strategy Tank [PRG09]
 
 ![screenshot strategy tank](src/images/screenshot-strategy-tank.png)
 
